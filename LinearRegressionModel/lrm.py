@@ -1,10 +1,12 @@
 import torch.nn as nn
 import torch
 import matplotlib.pyplot as plt
+import numpy as np
 
-plt.figure(figsize=(10, 7))
+fig, axes = plt.subplots(1, 2)
+fig.set_size_inches(12, 7)
 def plot_predictions(x, y, c="r", label="test"):
-    plt.scatter(x, y, c=c, s=4, label=label)
+    axes[0].scatter(x, y, c=c, s=4, label=label)
 
 
 class LinearRegressionModel(nn.Module):
@@ -50,7 +52,11 @@ optimizer = torch.optim.SGD(params=model_0.parameters(), lr=0.01)
 
 torch.manual_seed(42)
 
-epochs = 100
+epochs = 200
+epoch_x = torch.arange(0, epochs)
+loss_train = []
+loss_preds = []
+
 
 for epoch in range(epochs):
     model_0.train()
@@ -67,17 +73,29 @@ for epoch in range(epochs):
     #     plot_predictions(x_test, y_preds, c=color, label=f"pred-{epoch}")
 
     loss = loss_fn(y_pred, y_train)
+    loss_train.append(loss)
     loss.backward()
     optimizer.step()
 
     model_0.eval()
 
+    with torch.inference_mode():
+        y_pred = model_0(x_test)
+        loss_pred = loss_fn(y_pred, y_test)
+        loss_preds.append(loss_pred)
+
 print(model_0.state_dict())
 
-with torch.inference_mode():
-    y_preds = model_0(x_test)
+plot_predictions(x_test, y_pred, c="r", label="pred2")
 
-plot_predictions(x_test, y_preds, c="r", label="pred2")
+axes[0].legend(prop={"size":14})
 
-plt.legend(prop={"size":14})
+
+axes[1].plot(epoch_x, np.array(torch.tensor(loss_train).numpy()), label="train loss")
+axes[1].plot(epoch_x, loss_preds, label="test loss")
+axes[1].set_title("training and test loss curves")
+axes[1].set_xlabel("epochs")
+axes[1].set_ylabel("loss")
+axes[1].legend()
+
 plt.show()
