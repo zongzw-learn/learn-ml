@@ -1,10 +1,11 @@
 from sklearn.datasets import make_circles
 import matplotlib.pyplot as plt
 
+from __init__ import *
+
 # 1. Make classification data and get it ready
 n_samples = 1000
 
-X, y = make_circles(n_samples=n_samples, noise=0.03, random_state=42)
 plt.scatter(x=X[:, 0], y=X[:, 1], c=y, cmap=plt.cm.RdYlBu, linewidths=1)
 # plt.show()
 
@@ -62,11 +63,6 @@ print(f"x pred 10: {untrained_preds[:10]}")
 # 2.1 Setup loss function and optimizer
 loss_fn = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.SGD(params=model_0.parameters(), lr=0.1)
-
-def accuracy_fn(y_true, y_pred):
-    correct = torch.eq(y_true, y_pred).sum().item()
-    acc = (correct / len(y_pred)) * 100
-    return acc
 
 # 3. Train model
 y_logits = model_0(X_test.to(device))[:5]
