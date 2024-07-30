@@ -2,6 +2,7 @@ from sklearn.datasets import make_circles
 import matplotlib.pyplot as plt
 
 from __init__ import *
+from models import CircleModuleV0
 
 # 1. Make classification data and get it ready
 n_samples = 1000
@@ -34,16 +35,6 @@ from torch import nn
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
-
-class CircleModuleV0(nn.Module):
-    def __init__(self):
-        super().__init__()
-
-        self.layer_1 = nn.Linear(in_features=2, out_features=5)
-        self.layer_2 = nn.Linear(in_features=5, out_features=1)
-
-    def forward(self, x):
-        return self.layer_2(self.layer_1(x))
 
 model_0 = CircleModuleV0().to(device=device)
 print(model_0)
