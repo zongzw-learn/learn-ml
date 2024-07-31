@@ -1,10 +1,15 @@
 import torch
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import make_circles
 
-from __init__ import *
+from helper_functions import accuracy_fn
+
 from models import CircleModelV2
 from torch import nn
+
+from sklearn.datasets import make_circles
+
+n_samples = 1000
+X, y = make_circles(n_samples=n_samples, noise=0.03, random_state=42)
 
 X = torch.from_numpy(X).type(torch.float)
 y = torch.from_numpy(y).type(torch.float)

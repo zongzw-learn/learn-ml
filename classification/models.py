@@ -1,6 +1,6 @@
 
 from torch import nn
-
+import torch
 
 class CircleModuleV0(nn.Module):
     def __init__(self):
@@ -25,5 +25,6 @@ class CircleModelV2(nn.Module):
         self.relu = nn.ReLU()
 
     def forward(self, x):
+        # return self.layer_3(torch.sigmoid(self.layer_2(torch.sigmoid(self.layer_1(x))))) # not work, split train/test half by half
         return self.layer_3(self.relu(self.layer_2(self.relu(self.layer_1(x)))))
     

@@ -1,11 +1,12 @@
 from sklearn.datasets import make_circles
 import matplotlib.pyplot as plt
 
-from __init__ import *
 from models import CircleModuleV0
 
 # 1. Make classification data and get it ready
 n_samples = 1000
+
+X, y = make_circles(n_samples=n_samples, noise=0.03, random_state=42)
 
 plt.scatter(x=X[:, 0], y=X[:, 1], c=y, cmap=plt.cm.RdYlBu, linewidths=1)
 # plt.show()
@@ -67,6 +68,8 @@ y_pred_labels = torch.round(torch.sigmoid(model_0(X_test.to(device))[:5]))
 
 print(torch.eq(y_preds.squeeze(), y_pred_labels.squeeze()))
 print(y_preds.squeeze())
+
+from helper_functions import accuracy_fn
 
 # 3.2 Building a training and testing loop
 torch.manual_seed(42)
